@@ -35,13 +35,6 @@ class Bot:
         self.client = Campfire(settings.CAMPFIRE_SUBDOMAIN,
                                settings.CAMPFIRE_API_KEY, ssl=True)
         self.rooms = []
-        for r in settings.CAMPFIRE_ROOMS:
-            print r
-            room = self.client.find_room_by_name(r)
-            if room:
-                self.rooms.append(room)
-                room.join()
-
         self.plugins = []
         for p in settings.INSTALLED_PLUGINS:
             klass = scoutmaster
@@ -50,6 +43,15 @@ class Bot:
                 klass = getattr(klass, i)
             if klass:
                 self.plugins.append(klass())
+
+    def join_rooms(self):
+        self.rooms = []
+        for r in settings.CAMPFIRE_ROOMS:
+            print r
+            room = self.client.find_room_by_name(r)
+            if room:
+                self.rooms.append(room)
+                room.join()
 
     def listen(self):
         def callback(message):
@@ -64,3 +66,5 @@ class Bot:
         for r in self.rooms:
             r.listen(callback, errback)
 
+    def find_room_by_name(self, room_name):
+        return self.client.find_room_by_name(room_name)

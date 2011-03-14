@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 #
 # Copyright (c) 2011 Brad Taylor <brad@getcoded.net>
 #
@@ -24,14 +22,22 @@
 #
 
 from django.conf import settings
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from scoutmaster.core.bot import Bot
 
-class Command(NoArgsCommand):
-    help = "Runs the bot listener loop"
+class Command(BaseCommand):
+    help = "Changes the topic of the specified campfire chat room"
+    args = "<room name> <topic>"
 
     def handle(self, *args, **options):
+        if len(args) != 2:
+            raise CommandError('Either room name or topic not specified.')
+
+        room, topic = args
+
         b = Bot()
-        b.join_rooms()
-        b.listen()
+        room = b.find_room_by_name(room)
+        room.update('', topic)
+
+        print 'scoutmaster: The topic of "%s" room is now "%s"' % (room.name, topic)
