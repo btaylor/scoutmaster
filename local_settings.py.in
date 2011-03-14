@@ -26,3 +26,8 @@ CAMPFIRE_API_KEY = ''
 CAMPFIRE_ROOMS = (
     # The rooms that you want scoutmaster to monitor
 )
+
+INSTALLED_PLUGINS = (
+    # Enabled plugins as names off of the scoutmaster module
+    #'quotes.plugin.QuotePlugin',
+)

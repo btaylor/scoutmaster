@@ -21,10 +21,13 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+import scoutmaster
+
 from pinder import streaming
 from pinder.campfire import Campfire
 
 from scoutmaster import settings
+from scoutmaster.core.plugin import ListenerPlugin
 from scoutmaster.quotes.plugin import QuotePlugin
 
 class Bot:
@@ -32,9 +35,6 @@ class Bot:
         self.client = Campfire(settings.CAMPFIRE_SUBDOMAIN,
                                settings.CAMPFIRE_API_KEY, ssl=True)
         self.rooms = []
-        self.since_message_id = None
-
-        print settings.CAMPFIRE_ROOMS
         for r in settings.CAMPFIRE_ROOMS:
             print r
             room = self.client.find_room_by_name(r)
@@ -42,14 +42,22 @@ class Bot:
                 self.rooms.append(room)
             room.join()
 
-        print self.client.me()
+        self.plugins = []
+        for p in settings.INSTALLED_PLUGINS:
+            klass = scoutmaster
+            parts = p.split('.')
+            for i in parts:
+                klass = getattr(klass, i)
+            if klass:
+                self.plugins.append(klass())
 
     def listen(self):
         def callback(message):
-            p = QuotePlugin()
-            p.recieve_message(self.client,
-                              self.client.room(message['room_id']),
-                              message)
+            room = self.client.room(message['room_id'])
+            for p in self.plugins:
+                if isinstance(p, ListenerPlugin):
+                    p.recieve_message(self.client, room, message)
+
         def errback(message):
             print message
 

@@ -34,6 +34,11 @@ CAMPFIRE_ROOMS = (
     # The rooms that you want scoutmaster to monitor
 )
 
+INSTALLED_PLUGINS = (
+    # Enabled plugins as names off of the scoutmaster module
+    #'quotes.plugin.QuotePlugin',
+)
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
