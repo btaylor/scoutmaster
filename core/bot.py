@@ -23,6 +23,8 @@
 
 import scoutmaster
 
+from django.core.urlresolvers import get_callable
+
 from pinder import streaming
 from pinder.campfire import Campfire
 
@@ -37,17 +39,15 @@ class Bot:
         self.rooms = []
         self.plugins = []
         for p in settings.INSTALLED_PLUGINS:
-            klass = scoutmaster
-            parts = p.split('.')
-            for i in parts:
-                klass = getattr(klass, i)
+            klass = get_callable(p)
             if klass:
+                print 'Loading plugin: %s' % klass
                 self.plugins.append(klass())
 
     def join_rooms(self):
         self.rooms = []
         for r in settings.CAMPFIRE_ROOMS:
-            print r
+            print 'Joining room: %s' % r
             room = self.client.find_room_by_name(r)
             if room:
                 self.rooms.append(room)
