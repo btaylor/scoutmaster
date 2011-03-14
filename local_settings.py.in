@@ -1,0 +1,28 @@
+# Django settings for scoutmaster project.
+
+DEBUG = True
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
+# Your subdomain on campfirenow.com
+CAMPFIRE_SUBDOMAIN = ''
+
+# My name on Campfire.  I'll use this to know when I'm being spoken to.
+CAMPFIRE_BOT_NAME = 'scoutmaster'
+
+# The API key for the scoutmaster user.  You can find this token on the Edit My
+# Campfire Account screen
+CAMPFIRE_API_KEY = ''
+
+CAMPFIRE_ROOMS = (
+    # The rooms that you want scoutmaster to monitor
+)

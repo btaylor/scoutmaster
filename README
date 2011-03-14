@@ -1,1 +1,17 @@
 scoutmaster is a Campfire bot written in python.
+
+Prerequisites
+
+  - pinder (https://github.com/rhymes/pinder)
+    - httplib2
+    - simplejson
+    - twisted matrix
+  - Django 1.2
+
+About Scoutmaster's use of Django
+
+Outwardly, it would appear that scoutmaster is a django project, and that's
+partially true.  Scoutmaster uses Django's world-class ORM, and operates itself
+inside of a Django management command, but that's where the alignment with
+Django ends.  Scoutmaster does not require a webserver, and will not render
+pages if you use the runserver command.
