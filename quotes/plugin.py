@@ -51,7 +51,7 @@ class QuotePlugin(ListenerPlugin):
             if quote:
                 room.speak(render_to_string('quotes/quote.txt', {'quote': quote}))
             else:
-                room.speak('Outta quotes; say something funny!')
+                room.speak(render_to_string('quotes/no_quotes.txt'))
 
         m = re.match('%s: quote (?P<user>\w+) "?(?P<quote>.*)"?$' % settings.CAMPFIRE_BOT_NAME,
                      body)
