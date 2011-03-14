@@ -25,6 +25,8 @@ import re
 
 from datetime import datetime
 
+from django.template.loader import render_to_string
+
 from scoutmaster import settings
 from scoutmaster.quotes.models import Quote
 from scoutmaster.core.plugin import ListenerPlugin
@@ -47,7 +49,7 @@ class QuotePlugin(ListenerPlugin):
             user = m.group('user')
             quote = Quote.objects.get_random_quote(user=user)
             if quote:
-                room.speak(unicode(quote))
+                room.speak(render_to_string('quotes/quote.txt', {'quote': quote}))
             else:
                 room.speak('Outta quotes; say something funny!')
 
