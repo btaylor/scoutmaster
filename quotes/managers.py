@@ -21,37 +21,19 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-import re
+from django.db import connection, backend, models
 
-from datetime import datetime
+class QuoteManager(models.Manager):
+    def get_random_quote(self, user=None):
+        """
+        Returns a random quote for the user, if specified.  If not, returns a
+        random quote from anyone.  Returns None if no quotes are available.
+        """
+        quotes = self.order_by('?')
+        if user:
+            quotes.filter(user=user)
 
-from scoutmaster import settings
-from scoutmaster.quotes.models import Quote
-from scoutmaster.core.plugin import ListenerPlugin
+        if quotes.count() == 0:
+            return None
 
-class QuotePlugin(ListenerPlugin):
-    def __init__(self):
-        pass
-
-    def recieve_message(self, campfire, room, message):
-        body = message['body']
-        if not body:
-            return
-
-        # I'll only respond to messages directed at me
-        if not body.startswith(settings.CAMPFIRE_BOT_NAME):
-            return
-
-        m = re.match('%s: quote$' % settings.CAMPFIRE_BOT_NAME, body)
-        if m:
-            quote = Quote.objects.get_random_quote()
-            if quote:
-                room.speak(unicode(quote))
-            else:
-                room.speak('Outta quotes; say something funny!')
-
-        m = re.match('%s: quote (?P<user>\w+) "?(?P<quote>.*)"?$' % settings.CAMPFIRE_BOT_NAME,
-                     body)
-        if m:
-            Quote.objects.create(user=m.group('user'),
-                                 quote=m.group('quote'))
+        return quotes[0]

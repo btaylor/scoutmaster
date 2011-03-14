@@ -25,10 +25,13 @@ from datetime import datetime
 
 from django.db import models
 
+from scoutmaster.quotes.managers import QuoteManager
+
 class Quote(models.Model):
     date = models.DateTimeField(editable=False)
     user = models.CharField(max_length=128)
     quote = models.TextField()
+    objects = QuoteManager()
 
     def __unicode__(self):
         return '"%s" -- %s' % (self.quote, self.user)
