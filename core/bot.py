@@ -40,7 +40,7 @@ class Bot:
             room = self.client.find_room_by_name(r)
             if room:
                 self.rooms.append(room)
-            room.join()
+                room.join()
 
         self.plugins = []
         for p in settings.INSTALLED_PLUGINS:
