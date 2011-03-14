@@ -76,6 +76,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'core',
     'quotes',
+    'fogbugz',
 )
 
 # local_settings.py can be used to override environment-specific settings
