@@ -42,9 +42,10 @@ class QuotePlugin(ListenerPlugin):
         if not body.startswith(settings.CAMPFIRE_BOT_NAME):
             return
 
-        m = re.match('%s: quote$' % settings.CAMPFIRE_BOT_NAME, body)
+        m = re.match('%s: quote( (?P<user>\w+))?$' % settings.CAMPFIRE_BOT_NAME, body)
         if m:
-            quote = Quote.objects.get_random_quote()
+            user = m.group('user')
+            quote = Quote.objects.get_random_quote(user=user)
             if quote:
                 room.speak(unicode(quote))
             else:

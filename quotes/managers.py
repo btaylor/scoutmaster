@@ -31,7 +31,7 @@ class QuoteManager(models.Manager):
         """
         quotes = self.order_by('?')
         if user:
-            quotes.filter(user=user)
+            quotes = quotes.filter(user=user)
 
         if quotes.count() == 0:
             return None
