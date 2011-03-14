@@ -21,12 +21,19 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+from datetime import datetime
+
 from django.db import models
 
 class Quote(models.Model):
-    date = models.DateTimeField()
+    date = models.DateTimeField(editable=False)
     user = models.CharField(max_length=128)
     quote = models.TextField()
 
     def __unicode__(self):
         return '"%s" -- %s' % (self.quote, self.user)
+
+    def save(self, *args, **kwargs):
+        if not self.id and not self.date:
+            self.date = datetime.now()
+        super(Quote, self).save(*args, **kwargs)

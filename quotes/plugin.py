@@ -49,10 +49,7 @@ class QuotePlugin(ListenerPlugin):
         m = re.match('%s: quote (?P<user>\w+) "?(?P<quote>.*)"?$' % settings.CAMPFIRE_BOT_NAME,
                      body)
         if m:
-            # TODO: replace datetime.now() with overridden save inside of Quote
             Quote.objects.create(user=m.group('user'),
-                                 quote=m.group('quote'),
-                                 date=datetime.now())
 
     # TODO: This should go into Quote's manager
     def speak_random_quote(self, campfire, room, user=None):
